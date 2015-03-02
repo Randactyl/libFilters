@@ -1,0 +1,7 @@
+## Title: libFilters
+## Author: ingeniousclown and Randactyl
+## Version: 1.0r13
+## APIVersion: 100010
+
+LibStub\LibStub.lua
+libFilters\libFilters.lua
