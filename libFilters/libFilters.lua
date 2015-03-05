@@ -17,8 +17,6 @@ LAF_ENCHANTING_EXTRACTION = 12
 LAF_IMPROVEMENT = 13
 LAF_FENCE = 14
 LAF_LAUNDER = 15
--- this one is to leave an impression of backward compatibility
-LAF_ENCHANTING = LAF_ENCHANTING_EXTRACTION
 
 libFilters.filters = {
 	[LAF_BAGS] = {},
