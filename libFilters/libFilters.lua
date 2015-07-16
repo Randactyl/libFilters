@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "libFilters", 14
+local MAJOR, MINOR = "libFilters", 14.1
 local libFilters, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not libFilters then return end	--the same or newer version of this lib is already loaded into memory
 --thanks to Seerah for the previous lines and library
@@ -77,7 +77,7 @@ local inventoryUpdaters = {
 	end,
 }
 
-local alteredLAFs = {
+--[[local alteredLAFs = {
 	[LAF_BAGS] = false,
 	[LAF_BANK] = false,
 	[LAF_GUILDBANK] = false,
@@ -91,7 +91,7 @@ local alteredLAFs = {
 	[LAF_IMPROVEMENT] = false,
 	[LAF_FENCE] = false,
 	[LAF_LAUNDER] = false,
-}
+}]]
 
 local function df(...)
 	d(string.format(...))
@@ -133,7 +133,6 @@ local function RequestInventoryUpdate(filterType)
 	--register a new one
 	EVENT_MANAGER:RegisterForUpdate(callbackName, 10, function()
 		EVENT_MANAGER:UnregisterForUpdate(callbackName)
-	d(updaterName.." updated")
 		inventoryUpdaters[updaterName]()
 	end)
 end
@@ -192,8 +191,7 @@ function libFilters:RegisterFilter( filterTag, filterType, filterCallback )
 
 	callbacks[filterTag] = filterCallback
 	RequestInventoryUpdate(filterType)
-	alteredLAFs[filterType] = true
-	d("^ registered")
+	--alteredLAFs[filterType] = true
 end
 
 function libFilters:UnregisterFilter( filterTag, filterType )
@@ -206,8 +204,7 @@ function libFilters:UnregisterFilter( filterTag, filterType )
 			if callbacks[filterTag] ~= nil then
 				callbacks[filterTag] = nil
 				RequestInventoryUpdate(filterType)
-				alteredLAFs[filterType] = true
-				d("^ unregistered 1")
+				--alteredLAFs[filterType] = true
 			end
 		end
 	else
@@ -216,8 +213,7 @@ function libFilters:UnregisterFilter( filterTag, filterType )
 		if callbacks[filterTag] ~= nil then
 			callbacks[filterTag] = nil
 			RequestInventoryUpdate(filterType)
-			alteredLAFs[filterType] = true
-			d("^ unregistered 2")
+			--alteredLAFs[filterType] = true
 		end
 	end
 end
