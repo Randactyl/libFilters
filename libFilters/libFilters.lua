@@ -134,14 +134,8 @@ end
 
 function libFilters:RequestInventoryUpdate( filterType )
 	local updaterName = filterTypeToUpdaterName[filterType]
-	local callbackName = "libFilters_updateInventory_" .. updaterName
-	-- cancel previously scheduled update if any
-	EVENT_MANAGER:UnregisterForUpdate(callbackName)
-	-- register a new one
-	EVENT_MANAGER:RegisterForUpdate(callbackName, 40, function()
-		EVENT_MANAGER:UnregisterForUpdate(callbackName)
-		inventoryUpdaters[updaterName]()
-	end)
+
+	inventoryUpdaters[updaterName]()
 end
 
 --filterCallback must be a function with parameter (slot) and return true/false
