@@ -147,7 +147,7 @@ function libFilters:RequestInventoryUpdate(filterType)
 end
 
 --filterCallback must be a function with parameter (slot) and return true/false
-function libFilters:RegisterFilter(filterTag, filterType, filterCallback, forceUpdate)
+function libFilters:RegisterFilter(filterTag, filterType, filterCallback)
 	--lazily initialize the library
 	if(not self.IS_INITIALIZED) then self:InitializeLibFilters() end
 
@@ -166,14 +166,9 @@ function libFilters:RegisterFilter(filterTag, filterType, filterCallback, forceU
 	end
 
 	callbacks[filterTag] = filterCallback
-
-	if forceUpdate then
-		--d("Registered Filter & Requesting Update for: "..tostring(filterType))
-		self:RequestInventoryUpdate(filterType)
-	end
 end
 
-function libFilters:UnregisterFilter(filterTag, filterType, forceUpdate)
+function libFilters:UnregisterFilter(filterTag, filterType)
 	--lazily initialize the add-on
 	if(not self.IS_INITIALIZED) then self:InitializeLibFilters() end
 
@@ -182,11 +177,6 @@ function libFilters:UnregisterFilter(filterTag, filterType, forceUpdate)
 		for filterType, callbacks in pairs(filters) do
 			if callbacks[filterTag] ~= nil then
 				callbacks[filterTag] = nil
-				
-				if forceUpdate then
-					--d("Unregister Requesting Update for: "..tostring(filterType))
-					self:RequestInventoryUpdate(filterType)
-				end
 			end
 		end
 	else
@@ -194,11 +184,6 @@ function libFilters:UnregisterFilter(filterTag, filterType, forceUpdate)
 		local callbacks = filters[filterType]
 		if callbacks[filterTag] ~= nil then
 			callbacks[filterTag] = nil
-			
-			if forceUpdate then
-				--d("Unregister Requesting Update for: "..tostring(filterType))
-				self:RequestInventoryUpdate(filterType)
-			end
 		end
 	end
 end
