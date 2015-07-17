@@ -109,20 +109,6 @@ local function EnchantingFilter(self, bagId, slotIndex, ...)
 	return filterType and not runFilters(filterType, bagId, slotIndex)
 end
 
-local function RequestInventoryUpdate(filterType)
-	local updaterName = filterTypeToUpdaterName[filterType]
-	local callbackName = "libFilters_updateInventory_" .. updaterName
-	-- cancel previously scheduled update if any
-	EVENT_MANAGER:UnregisterForUpdate(callbackName)
-	--register a new one
-	EVENT_MANAGER:RegisterForUpdate(callbackName, 10, function()
-		EVENT_MANAGER:UnregisterForUpdate(callbackName)
-		inventoryUpdaters[updaterName]()
-
-		--d("inventoryUpdater Running: "..tostring(updaterName))
-	end)
-end
-
 -- _inventory_ should be one of:
 --  a) backpack layout fragment with .layoutData
 --  b) inventory table from PLAYER_INVENTORY.inventories
@@ -144,6 +130,20 @@ function libFilters:HookAdditionalFilter(filterType, inventory)
 			return runFilters(filterType, slot)
 		end
 	end
+end
+
+function libFilters:RequestInventoryUpdate(filterType)
+	local updaterName = filterTypeToUpdaterName[filterType]
+	local callbackName = "libFilters_updateInventory_" .. updaterName
+	-- cancel previously scheduled update if any
+	EVENT_MANAGER:UnregisterForUpdate(callbackName)
+	--register a new one
+	EVENT_MANAGER:RegisterForUpdate(callbackName, 10, function()
+		EVENT_MANAGER:UnregisterForUpdate(callbackName)
+		inventoryUpdaters[updaterName]()
+
+		--d("inventoryUpdater Running: "..tostring(updaterName))
+	end)
 end
 
 --filterCallback must be a function with parameter (slot) and return true/false
@@ -169,7 +169,7 @@ function libFilters:RegisterFilter(filterTag, filterType, filterCallback, forceU
 
 	if forceUpdate then
 		--d("Registered Filter & Requesting Update for: "..tostring(filterType))
-		RequestInventoryUpdate(filterType)
+		self:RequestInventoryUpdate(filterType)
 	end
 end
 
@@ -185,7 +185,7 @@ function libFilters:UnregisterFilter(filterTag, filterType, forceUpdate)
 				
 				if forceUpdate then
 					--d("Unregister Requesting Update for: "..tostring(filterType))
-					RequestInventoryUpdate(filterType)
+					self:RequestInventoryUpdate(filterType)
 				end
 			end
 		end
@@ -197,7 +197,7 @@ function libFilters:UnregisterFilter(filterTag, filterType, forceUpdate)
 			
 			if forceUpdate then
 				--d("Unregister Requesting Update for: "..tostring(filterType))
-				RequestInventoryUpdate(filterType)
+				self:RequestInventoryUpdate(filterType)
 			end
 		end
 	end
