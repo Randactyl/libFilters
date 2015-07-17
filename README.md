@@ -18,7 +18,7 @@ Filter (un)registration works just like (un)registering for ESO events.
 
 To register a new filter, call:
 
-    libFilters:RegisterFilter(filterTag, filterType, filterCallback)
+    libFilters:RegisterFilter(filterTag, filterType, filterCallback, forceUpdate)
     
 filterTag should be a unique string.
 
@@ -47,9 +47,11 @@ filterType is any one of the LAF_ prefixed constants provided by libFilters. The
     LAF_FENCE = 14
     LAF_LAUNDER = 15
 
+forceUpdate is a boolean. If you need to update the inventory associated with your filter's LAF, pass true. If you are registering multiple filters in quick succession, consider passing false or nil until the last registration.
+
 To unregister a filter, call:
 
-    libFilters:UnregisterFilter(filterTag, filterType)
+    libFilters:UnregisterFilter(filterTag, filterType, forceUpdate)
     
 ###Other libFilters functions
 
