@@ -64,9 +64,6 @@ libFilters has other functions that may prove useful to your needs.
     --a) backpack layout fragment with layoutData member
     --b) inventory table from PLAYER_INVENTORY.inventories
     
-    libFilters:RequestInventoryUpdate(filterType)
-    --manually request an update for the inventory tied to the provided LAF_ prefixed constant
-    
     libFilters:IsFilterRegistered(filterTag, filterType)
     --returns true if the filtering logic registered with filterTag is still active, false otherwise
     
