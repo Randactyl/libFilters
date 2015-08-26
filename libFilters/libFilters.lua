@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "libFilters", 15.1
+local MAJOR, MINOR = "libFilters", 15.2
 local libFilters, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not libFilters then return end	--the same or newer version of this lib is already loaded into memory
 --thanks to Seerah for the previous lines and library
