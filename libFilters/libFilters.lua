@@ -17,6 +17,7 @@ LAF_ENCHANTING_EXTRACTION = 12
 LAF_IMPROVEMENT = 13
 LAF_FENCE = 14
 LAF_LAUNDER = 15
+LAF_ALCHEMY = 16
 
 libFilters.filters = {
 	[LAF_BAGS] = {},
@@ -32,6 +33,7 @@ libFilters.filters = {
 	[LAF_IMPROVEMENT] = {},
 	[LAF_FENCE] = {},
 	[LAF_LAUNDER] = {},
+	[LAF_ALCHEMY] = {},
 }
 local filters = libFilters.filters
 
@@ -54,6 +56,7 @@ local filterTypeToUpdaterName = {
 	[LAF_IMPROVEMENT] = "IMPROVEMENT",
 	[LAF_FENCE] = "BACKPACK",
 	[LAF_LAUNDER] = "BACKPACK",
+	[LAF_ALCHEMY] = "ALCHEMY",
 }
 
 local inventoryUpdaters = {
@@ -74,6 +77,9 @@ local inventoryUpdaters = {
 	end,
 	ENCHANTING = function()
 		ENCHANTING.inventory:HandleDirtyEvent()
+	end,
+	ALCHEMY = function()
+		ALCHEMY.inventory:Refresh()
 	end,
 }
 
@@ -107,6 +113,12 @@ end
 local function EnchantingFilter(self, bagId, slotIndex, ...)
 	local filterType = enchantingModeToFilterType[ENCHANTING.enchantingMode]
 	return filterType and not runFilters(filterType, bagId, slotIndex)
+end
+
+--LAF_ALCHEMY
+--since this is a PreHook using ZO_PreHook, a return of true means don't add
+local function AlchemyFilter(self, bagId, slotIndex, ...)
+	return not runFilters(LAF_ALCHEMY, bagId, slotIndex)
 end
 
 -- _inventory_ should be one of:
@@ -269,4 +281,5 @@ function libFilters:InitializeLibFilters()
 	ZO_PreHook(SMITHING.deconstructionPanel.inventory, "AddItemData", DeconstructionFilter)
 	ZO_PreHook(SMITHING.improvementPanel.inventory, "AddItemData", ImprovementFilter)
 	ZO_PreHook(ENCHANTING.inventory, "AddItemData", EnchantingFilter)
+	ZO_PreHook(ALCHEMY.inventory, "AddItemData", AlchemyFilter)
 end
