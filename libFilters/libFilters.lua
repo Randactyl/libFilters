@@ -79,7 +79,7 @@ local inventoryUpdaters = {
 		ENCHANTING.inventory:HandleDirtyEvent()
 	end,
 	ALCHEMY = function()
-		ALCHEMY.inventory:Refresh()
+		ALCHEMY.inventory:HandleDirtyEvent()
 	end,
 }
 
